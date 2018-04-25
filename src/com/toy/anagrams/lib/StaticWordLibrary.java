@@ -31,6 +31,8 @@
 
 package com.toy.anagrams.lib;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -157,29 +159,33 @@ final class StaticWordLibrary extends WordLibrary {
      * @param idx index of required word
      * @return word at that index in its scrambled form
      */
+    List<String> list1 = new ArrayList<>();
     public String getScrambledWord(int idx) {
         //return SCRAMBLED_WORD_LIST[idx];
-    	String word = getWord(idx);
-    	  int x = word.length();
-    	  Random rnd = new Random();
-    	  String wordlist[] = new String[x];
-    	  for(int a=0;a<x;a++) {
-    	    String str = String.valueOf(word.charAt(a));
-    	    wordlist[a]=str;
-    	  }
-    	  for(int i=0;i<x;i++) {
-    	        int ran = rnd.nextInt(x); //変える引数
-    	        String tem = wordlist[i]; //一旦保存
-    	        wordlist[i]=wordlist[ran];
-    	        wordlist[ran]=tem;
-    	  }
-    	  String sclambledWord = "";
-    	  for(int j=0;j<wordlist.length;j++) {
-    	    sclambledWord += wordlist[j];
-    	  }
-    	  return sclambledWord;
+     list1 = new ArrayList<>();
+     String word = getWord(idx);
+       int x = word.length();
+       for(int a=0;a<x;a++) {
+         String str = String.valueOf(word.charAt(a));
+         list1.add(str);
+       }
+       scrambleWord(list1);
+       String sclambledWord = "";
+       for(int j=0;j<list1.size();j++) {
+         sclambledWord += list1.get(j);
+       }
+       WORD_LIST[idx]=sclambledWord;
+       return sclambledWord;
     }
-
+    public void scrambleWord(List<String> list) {
+     int wlLength = list.size();
+     Random rnd = new Random();
+     int ran = rnd.nextInt(wlLength);
+       int ran2 = rnd.nextInt(wlLength);
+       String temp = list.get(ran);
+       list.set(ran,list.get(ran2));
+     list.set(ran2,temp);
+    }
     /**
      * Gets the number of words in the library.
      * @return the total number of plain/scrambled word pairs in the library
